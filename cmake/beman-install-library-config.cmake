@@ -121,7 +121,10 @@ function(beman_install_library name)
         find_file(
             config_file_template
             NAMES "${package_name}-config.cmake.in"
-            PATHS "${CMAKE_CURRENT_SOURCE_DIR}"
+            PATHS
+                "${CMAKE_CURRENT_SOURCE_DIR}"
+                "${PROJECT_SOURCE_DIR}/cmake"
+                "${CMAKE_SOURCE_DIR}/cmake"
             NO_DEFAULT_PATH
             NO_CACHE
             REQUIRED
