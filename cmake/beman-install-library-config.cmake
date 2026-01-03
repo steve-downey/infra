@@ -36,15 +36,23 @@ function(beman_install_library name)
     #      The prefix `<PREFIX>` is the uppercased name of the library with dots
     #      replaced by underscores.
     #
+    set(options "")
+    set(multiValueArgs "")
+    set(multiValueArgs "FILE_SET")
+    cmake_parse_arguments(
+        BEMAN_INSTALL_LIBRARY
+        "${options}"
+        "${oneValueArgs}"
+        "${multiValueArgs}"
+        ${ARGN}
+    )
+
     if(NOT TARGET "${name}")
         message(FATAL_ERROR "Target '${name}' does not exist.")
     endif()
 
-    if(NOT ARGN STREQUAL "")
-        message(
-            FATAL_ERROR
-            "beman_install_library does not accept extra arguments: ${ARGN}"
-        )
+    if(NOT BEMAN_INSTALL_LIBRARY_FILE_SET)
+        set(BEMAN_INSTALL_LIBRARY_FILE_SET "HEADERS")
     endif()
 
     # Given foo.bar, the component name is bar
@@ -68,7 +76,7 @@ function(beman_install_library name)
         TARGETS "${target_name}"
         COMPONENT "${install_component_name}"
         EXPORT "${export_name}"
-        FILE_SET HEADERS
+        FILE_SET "${BEMAN_INSTALL_LIBRARY_FILE_SET}"
     )
 
     set_target_properties(
@@ -121,7 +129,10 @@ function(beman_install_library name)
         find_file(
             config_file_template
             NAMES "${package_name}-config.cmake.in"
-            PATHS "${CMAKE_CURRENT_SOURCE_DIR}"
+            PATHS
+                "${CMAKE_CURRENT_SOURCE_DIR}"
+                "${PROJECT_SOURCE_DIR}/cmake"
+                "${CMAKE_SOURCE_DIR}/cmake"
             NO_DEFAULT_PATH
             NO_CACHE
             REQUIRED
