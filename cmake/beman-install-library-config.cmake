@@ -36,14 +36,12 @@ function(beman_install_library name)
     #      The prefix `<PREFIX>` is the uppercased name of the library with dots
     #      replaced by underscores.
     #
-    set(options "")
-    set(multiValueArgs "")
-    set(multiValueArgs "FILE_SET")
+
     cmake_parse_arguments(
         BEMAN_INSTALL_LIBRARY
-        "${options}"
-        "${oneValueArgs}"
-        "${multiValueArgs}"
+        "" # options
+        "" # oneValueArgs
+        "FILE_SET" # multiValueArgs"
         ${ARGN}
     )
 
