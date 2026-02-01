@@ -71,3 +71,5 @@ configure_beman_cmake_instrumentation()
 In either form, CMake will call `instrumentation.sh` which will copy the trace data in json format into a `.trace` subdirectory within the build directory.
 
 Multiple calls to `configure_beman_cmake_instrumentation` will only configure the callback hooks once, so it is safe to include multiple times, including by TOP_LEVEL_INCLUDE.
+
+![Example of Perfetto Visualization](docs/tracing_example.png)
