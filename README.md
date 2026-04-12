@@ -57,18 +57,32 @@ Some options for the project and target will also be supported:
 
 The cmake modules in this library provide access to CMake instrumentation data in Google Trace format which is visualizable with chrome://tracing and https://ui.perfetto.dev.
 
-Telemetry may be enabled either by adding to the CMAKE_PROJECT_TOP_LEVEL_INCLUDES
-```sh
--DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=infra/cmake/BuildTelemetry.cmake
+Telemetry may be enabled in several ways:
+
+## `include`
+
+```cmake
+include (infra/cmake/BuildTelemetry.cmake)
+configure_build_telemetry()
 ```
-or by calling explicitly within the CMakeList.txt file.
+
+## `find_package`
+
 ```cmake
 find_package(BuildTelemetry)
 configure_build_telemetry()
 ```
 
-In either form, CMake will call `telemetry.sh` which will copy the trace data in json format into a `.trace` subdirectory within the build directory.
+as long as [BuildTelemetryConfig.cmake](./cmake/BuildTelemetryConfig.cmake) is in your module path.
 
-Multiple calls to `configure_build_telemetry` will only configure the callback hooks once, so it is safe to include multiple times, including by TOP_LEVEL_INCLUDE.
+## `CMAKE_PROJECT_TOP_LEVEL_INCLUDES`
+A non-invasive way to inject this telemetry into a CMake build you do not want to modify.
+Add:
+```sh
+-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=infra/cmake/BuildTelemetry.cmake
+```
+To the cmake invocation.
 
-![Example of Visualization](docs/tracing_example.png)
+In any form, CMake will call `telemetry.sh` which will copy the trace data in json format into a `.trace` subdirectory within the build directory.
+
+Multiple calls to `configure_build_telemetry` will only configure the callback hooks once, so it is safe to enable multiple times, including by TOP_LEVEL_INCLUDE.
