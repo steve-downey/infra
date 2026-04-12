@@ -4,7 +4,7 @@ set(BUILD_TELEMETRY_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 function(configure_build_telemetry)
     if(NOT BUILD_TELEMETRY_CONFIGURATION)
-      message(STATUS "Configuring Build Telemetry")
+        message(STATUS "Configuring Build Telemetry")
 
         # Check if the CMake version is at least 4.3
         if(CMAKE_VERSION VERSION_LESS "4.3")
