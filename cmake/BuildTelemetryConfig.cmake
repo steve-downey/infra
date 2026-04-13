@@ -4,15 +4,15 @@ set(BUILD_TELEMETRY_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 function(configure_build_telemetry)
     if(NOT BUILD_TELEMETRY_CONFIGURATION)
-        message(STATUS "Configuring Build Telemetry")
-
         # Check if the CMake version is at least 4.3
         if(CMAKE_VERSION VERSION_LESS "4.3")
             message(
-                WARNING
+                STATUS
                 "CMake version is less than 4.3, configuring cmake_instrumentation is unavailable."
             )
             return()
+        else()
+            message(STATUS "Configuring Build Telemetry")
         endif()
 
         # Telemetry query
@@ -25,7 +25,7 @@ function(configure_build_telemetry)
           CALLBACK ${BUILD_TELEMETRY_DIR}/telemetry.sh
         )
         message(
-            WARNING
+            DEBUG
             "using callback script ${BUILD_TELEMETRY_DIR}/telemetry.sh"
         )
 
